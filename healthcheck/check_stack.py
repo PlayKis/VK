@@ -1,22 +1,4 @@
-#!/usr/bin/env python3
-"""
-check_stack.py
 
-Углублённая проверка mini lakehouse:
-  1. Trino отвечает на /v1/info (базовая проверка, всегда выполняется)
-  2. MinIO отвечает на /minio/health/live (базовая проверка, всегда выполняется)
-  3. Postgres принимает TCP-соединение (базовая проверка, всегда выполняется)
-  4. [опционально, если установлен psycopg2] в Postgres реально существуют
-     служебные таблицы iceberg_tables / iceberg_namespace_properties
-  5. [опционально, если установлен boto3] в MinIO реально существует
-     бакет "warehouse"
-
-Запускать с хоста, где поднят docker compose:
-    python3 healthcheck/check_stack.py
-
-Необязательные зависимости для более глубоких проверок:
-    pip install psycopg2-binary boto3 --break-system-packages
-"""
 
 import socket
 import sys

@@ -1,0 +1,4 @@
+INSERT INTO iceberg.demo.orders (order_id, customer, amount, order_date) VALUES
+    (1, 'Alice', 120.50, DATE '2026-01-15'),
+    (2, 'Bob',   45.00,  DATE '2026-02-03'),
+    (3, 'Carol', 89.99,  DATE '2026-02-20');

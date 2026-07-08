@@ -76,40 +76,7 @@ chmod +x healthcheck/check_stack.sh
 
 # или более подробно:
 python3 healthcheck/check_stack.py
-```
-
-## ⚠️ Известная проблема: баг Trino с JDBC-каталогом Iceberg
-
-Начиная с Trino 414 и вплоть до актуальных версий (включая используемую здесь)
-в самом Trino есть баг: при инициализации JDBC-каталога Iceberg передаётся
-`initializeCatalogTables=false`, из-за чего Trino **не создаёт** служебные
-таблицы `iceberg_tables` и `iceberg_namespace_properties` в Postgres сам.
-Без них любой запрос к каталогу `iceberg` падает с ошибкой:
-
-```
-Cannot check and eventually update SQL schema
-Caused by: relation "iceberg_tables" does not exist
-```
-
-Подробности: [github.com/trinodb/trino/issues/20419](https://github.com/trinodb/trino/issues/20419)
-
-**Решение уже встроено в этот репозиторий**: `docker-compose.yml` монтирует
-`sql/init_iceberg_catalog.sql` в `/docker-entrypoint-initdb.d/` контейнера
-Postgres — официальный образ `postgres` автоматически выполняет все скрипты
-из этой папки при первой инициализации пустого volume. Поэтому при обычном
-`docker compose up -d` с нуля всё работает сразу, без ручных действий.
-
-Если ты когда-то пересоздашь volume Postgres командой `docker compose down -v`
-и снова поднимешь стек — скрипт выполнится заново автоматически, никаких
-дополнительных шагов не требуется.
-
-Если по какой-то причине таблицы всё равно не создались (например, volume был
-инициализирован ещё до появления этого скрипта в репозитории), примени его
-вручную:
-
-```bash
-docker exec -i lakehouse-postgres psql -U iceberg -d iceberg_catalog < sql/init_iceberg_catalog.sql
-```
+``'
 
 ## Работа с данными
 
